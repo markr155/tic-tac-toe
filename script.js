@@ -32,9 +32,6 @@ const gameBoard = (() => {
 
     const addMarker = (row, col, player) => {
         board[row][col].addToken(player.getToken());
-        console.log(`row: ${row},
-        col: ${col},
-        token: ${player.getToken()}`);
     };
 
     return {
@@ -44,10 +41,12 @@ const gameBoard = (() => {
          };
 })();
 
-const Player = (token) => {
-    let getToken = () => token;
+const Player = (token, name) => {
+    const getToken = () => token;
+    const getName = () => name;
     return { 
-        getToken 
+        getToken, 
+        getName
     };
 };
 
@@ -68,36 +67,67 @@ function Cell() {
 }
 
 const gameController = (() => {
-    const player1 = Player('X');
-    const player2 = Player('O');
+    const player1 = Player('X','Player 1');
+    const player2 = Player('O', 'Computer');
     const players = [player1, player2];
 
     let activePlayer = players[0];
-    const getActivePlayer = () => activePlayer;
-
-    
+    const getActivePlayer = () => activePlayer;    
 
     const playRound = (cellClicked) => {
         const cell = cellClicked.target;
         const row = cell.dataset.row;
         const col = cell.dataset.col;
-        console.log(cell.target);
-        //check if cell is occupied - check board array
-            //if yes not legal, display error, end early no changes
-            //if no continue
-        if (gameBoard.getBoard()[row][col].getValue() !== ""){
+        const board = gameBoard.getBoard();
+        //check if cell is occupied
+        if (board[row][col].getValue() !== ""){
             console.log('Cell not valid');    
             return;
         };
         //add player token to array
         gameBoard.addMarker(row, col, getActivePlayer());
-        //update score
         //update board
         gameBoard.displayBoard();
         //check if win
+        CheckWin();
+
         //change active player turn
+        getActivePlayer() === players[0] ? activePlayer = players[1] : activePlayer = players[0] 
         
-    };
+        //win check
+        function CheckWin(){
+            const token = getActivePlayer().getToken();
+            let win = false;
+            //row
+            if (board[row][0].getValue() == token &&
+                board[row][1].getValue() == token &&
+                board[row][2].getValue() == token) {
+                win = true;
+            }
+            //column
+            if (board[0][col].getValue() == token &&
+                board[1][col].getValue() == token &&
+                board[2][col].getValue() == token) {
+                win = true;
+            }
+            //diag
+            if (board[0][0].getValue() == token &&
+                board[1][1].getValue() == token &&
+                board[2][2].getValue() == token) {
+                win = true;
+            }
+            if (board[2][0].getValue() == token &&
+                board[1][1].getValue() == token &&
+                board[0][2].getValue() == token) {
+                win = true;
+            }
+            if (win === true){
+                alert(`${gameController.getActivePlayer().getName()} has won the game!`)
+            }
+            };
+             
+            
+        };
     return { 
         players, 
         playRound,
