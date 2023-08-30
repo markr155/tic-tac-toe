@@ -3,9 +3,11 @@ Main goal here is to have as little global code as possible. Try tucking everyth
 
 <!-- 1. create gameboard array inside of gameboard object -->
 
-2. create player factories
+<!-- 2. create player factories -->
 
-3. create gameController object
+<!-- 3. create gameController object -->
+
+<!-- 4. display board to screen -->
 
 
 
