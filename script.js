@@ -8,15 +8,14 @@ const gameBoard = (() => {
         board[i] = [];
         for (let j = 0; j < columns; j++){
             board[i].push(Cell());
-        }
-    }    
-
+            };
+    };   
     const getBoard = () => (board);
 
     const displayBoard = () => {
         //clear board
         while (gameContainer.childElementCount > 0){ gameContainer.removeChild(gameContainer.lastChild)};
-        //displays board
+        //displays board state
         board.forEach((row, rowNum) => {
             row.forEach((col, index) => {
                 const newCell = document.createElement('button');
@@ -98,6 +97,7 @@ const gameController = (() => {
         function CheckWin(){
             const token = getActivePlayer().getToken();
             let win = false;
+            let draw = true;
             //row
             if (board[row][0].getValue() == token &&
                 board[row][1].getValue() == token &&
@@ -115,15 +115,26 @@ const gameController = (() => {
                 board[1][1].getValue() == token &&
                 board[2][2].getValue() == token) {
                 win = true;
-            }
+            };
             if (board[2][0].getValue() == token &&
                 board[1][1].getValue() == token &&
                 board[0][2].getValue() == token) {
                 win = true;
-            }
+            };
             if (win === true){
-                alert(`${gameController.getActivePlayer().getName()} has won the game!`)
-            }
+                alert(`${gameController.getActivePlayer().getName()} has won the game!`);
+            };
+            //check draw
+            board.forEach(row => {
+                row.forEach((cell) => {
+                    if (cell.getValue() === "") {
+                        draw = false;
+                    };
+                });
+            });
+            if (draw == true){
+                alert(`The game was a draw!`);
+            };
             };
              
             
