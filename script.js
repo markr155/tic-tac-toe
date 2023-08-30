@@ -29,11 +29,21 @@ const gameBoard = (() => {
         })
     };
 
+    const resetBoard = () => {
+        board.forEach(row => {
+            row.forEach(cell => {
+                cell.resetCell();
+            });
+        });
+        displayBoard();
+    };
+
     const addMarker = (row, col, player) => {
         board[row][col].addToken(player.getToken());
     };
 
     return {
+        resetBoard,
         getBoard, 
         displayBoard,
         addMarker
@@ -56,9 +66,14 @@ function Cell() {
         value = player;
     };
 
+    const resetCell = () => {
+        value = '';
+    };
+
     const getValue = () => value;
 
     return {
+        resetCell,
         addToken,
         getValue
     };
@@ -123,6 +138,7 @@ const gameController = (() => {
             };
             if (win === true){
                 alert(`${gameController.getActivePlayer().getName()} has won the game!`);
+                gameBoard.resetBoard();
             };
             //check draw
             board.forEach(row => {
@@ -134,6 +150,7 @@ const gameController = (() => {
             });
             if (draw == true){
                 alert(`The game was a draw!`);
+                gameBoard.resetBoard();
             };
             };
              
